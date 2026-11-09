@@ -1,0 +1,872 @@
+/* =========================================================
+   НАСТРОЙКИ: цвета и размеры.
+   Чтобы сменить акцентный цвет, поменяйте --accent, --accent-hover
+   и --accent-rgb (тот же цвет, но числами — для полупрозрачности).
+   ========================================================= */
+:root {
+	--bg: #16161a;            /* фон страницы — тёмно-серый */
+	--bg-card: #1f1f25;       /* фон карточек */
+	--bg-card-hover: #25252d;
+	--border: #2e2e37;        /* тонкие рамки */
+	--text: #ececf1;          /* основной текст */
+	--text-muted: #9a9aa8;    /* второстепенный текст */
+	--accent: #ff8a3d;        /* акцентный цвет — оранжевый */
+	--accent-hover: #ffa766;
+	--accent-rgb: 255, 138, 61; /* тот же #ff8a3d, записанный числами R, G, B */
+	--on-accent: #1b1209;     /* тёмный текст на оранжевых кнопках — так лучше читается */
+	--accent-soft: rgba(var(--accent-rgb), 0.14); /* полупрозрачный акцент для подложек */
+
+	--radius: 16px;
+	--header-height: 68px;
+	--transition: 0.25s ease;
+}
+
+/* ========== Общие стили ========== */
+html {
+	scroll-behavior: smooth;
+	/* чтобы фиксированное меню не закрывало заголовок раздела при переходе по ссылке */
+	scroll-padding-top: var(--header-height);
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	font-size: 17px;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+h1, h2, h3, p {
+	margin: 0;
+}
+
+/* Видимая рамка при навигации с клавиатуры */
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 6px;
+}
+
+.container {
+	width: 100%;
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.accent {
+	color: var(--accent);
+}
+
+/* слово не разрывается переносом строки (например, по дефису) */
+.nowrap {
+	white-space: nowrap;
+}
+
+/* ========== Кнопки ========== */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 14px 26px;
+	border-radius: 12px;
+	border: 1px solid transparent;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: background-color var(--transition), border-color var(--transition),
+		transform var(--transition), box-shadow var(--transition);
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+}
+
+.btn--primary {
+	background: var(--accent);
+	color: var(--on-accent);
+}
+
+.btn--primary:hover {
+	background: var(--accent-hover);
+	box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.35);
+}
+
+/* «Стеклянная» кнопка: полупрозрачный белый фон, сквозь который
+   просвечивает то, что под ней, плюс лёгкое размытие */
+.btn--ghost {
+	background: rgba(255, 255, 255, 0.06);
+	border-color: rgba(255, 255, 255, 0.18);
+	color: var(--text);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.btn--ghost:hover {
+	background: rgba(255, 255, 255, 0.1);
+	border-color: var(--accent);
+	color: var(--accent-hover);
+}
+
+.btn--small {
+	padding: 10px 18px;
+	font-size: 15px;
+	border-radius: 10px;
+}
+
+.btn i {
+	font-size: 18px;
+}
+
+.tg-icon {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	fill: currentColor;
+}
+
+/* ========== Шапка и меню ========== */
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	height: var(--header-height);
+	/* полупрозрачный тёмный фон с размытием — меню всегда отделено от страницы */
+	background: rgba(22, 22, 26, 0.75);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border-bottom: 1px solid var(--border);
+	transition: background-color var(--transition);
+}
+
+/* класс добавляется скриптом, когда страницу прокрутили, — фон становится плотнее */
+.header.is-scrolled {
+	background: rgba(22, 22, 26, 0.9);
+}
+
+.header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+}
+
+/* Логотип-ромашка слева в меню */
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+.logo img {
+	width: 32px;
+	height: 32px;
+	transition: transform 0.6s ease;
+}
+
+/* при наведении ромашка плавно поворачивается */
+.logo:hover img {
+	transform: rotate(90deg);
+}
+
+.nav__list {
+	display: flex;
+	gap: 32px;
+}
+
+.nav__link {
+	color: var(--text-muted);
+	font-weight: 500;
+	transition: color var(--transition);
+}
+
+.nav__link:hover {
+	color: var(--text);
+}
+
+/* Кнопка-«бургер»: на компьютере скрыта */
+.burger {
+	display: none;
+	position: relative;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.burger span {
+	position: absolute;
+	left: 11px;
+	width: 22px;
+	height: 2px;
+	background: var(--text);
+	border-radius: 2px;
+	transition: transform var(--transition), opacity var(--transition);
+}
+
+.burger span:nth-child(1) { top: 15px; }
+.burger span:nth-child(2) { top: 21px; }
+.burger span:nth-child(3) { top: 27px; }
+
+/* Когда меню открыто — полоски складываются в крестик */
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ========== Главный экран ========== */
+.hero {
+	display: flex;
+	align-items: center;
+	min-height: 100vh;
+	min-height: 100svh;
+	padding: calc(var(--header-height) + 40px) 0 60px;
+	position: relative;
+	isolation: isolate; /* декоративные слои ниже остаются внутри главного экрана */
+	overflow: hidden;
+	/* Градиент: тёплое оранжевое пятно справа сверху, второе, слабее, — слева снизу,
+	   а под ними — фон чуть светлее и теплее остального сайта */
+	background:
+		radial-gradient(ellipse 60% 60% at 85% 25%, rgba(var(--accent-rgb), 0.30), transparent 70%),
+		radial-gradient(ellipse 55% 55% at 5% 95%, rgba(var(--accent-rgb), 0.16), transparent 70%),
+		linear-gradient(160deg, #241b18 0%, #1c181b 50%, #19171b 100%);
+	border-bottom: 1px solid var(--border);
+}
+
+/* Лёгкая сетка из точек поверх градиента, которая растворяется к краям */
+.hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+	background-size: 26px 26px;
+	-webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+	mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+
+/* Светящаяся линия по нижнему краю — отделяет главный экран от остального сайта */
+.hero::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.6) 30%, var(--accent) 60%, transparent);
+}
+
+.hero__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	justify-items: center;
+	gap: 36px;
+	text-align: center;
+}
+
+/* Круг с фото: рамка, оранжевое кольцо и свечение — на обёртке,
+   а всё, что выходит за круг, обрезается (overflow: hidden) */
+.hero__photo {
+	position: relative;
+	width: 210px;
+	flex-shrink: 0;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: 50%;
+	border: 3px solid var(--bg-card);
+	box-shadow:
+		0 0 0 2px var(--accent),                 /* тонкое оранжевое кольцо */
+		0 0 60px 12px rgba(var(--accent-rgb), 0.25); /* мягкое свечение вокруг */
+	/* фото прижато к нижнему краю круга */
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	/* заливка круга — тот же тёмный цвет, что и фон на фото,
+	   чтобы вокруг уменьшенного фото не было видно границ */
+	background: #0d0b08;
+}
+
+/* Настройки фото внутри круга:
+   --photo-scale   — размер фото относительно круга (1 = во весь круг);
+   --photo-shift-x — сдвиг вправо (минус — влево). */
+.hero__photo img {
+	--photo-scale: 0.97;
+	--photo-shift-x: 5px;
+	width: calc(100% * var(--photo-scale));
+	aspect-ratio: 1;
+	object-fit: cover;
+	transform: translateX(var(--photo-shift-x));
+	/* края фото слева, справа и сверху плавно растворяются в заливке круга */
+	-webkit-mask-image:
+		linear-gradient(to right, transparent, #000 10%, #000 90%, transparent),
+		linear-gradient(to bottom, transparent, #000 10%);
+	-webkit-mask-composite: source-in;
+	mask-image:
+		linear-gradient(to right, transparent, #000 10%, #000 90%, transparent),
+		linear-gradient(to bottom, transparent, #000 10%);
+	mask-composite: intersect;
+}
+
+.hero__text {
+	max-width: 640px;
+}
+
+.hero__name {
+	margin-bottom: 14px;
+	color: var(--accent-hover);
+	font-size: 19px; /* размер надписи «Привет, я …» */
+	font-weight: 600;
+}
+
+.hero__title {
+	margin-bottom: 20px;
+	font-size: clamp(32px, 8vw, 56px);
+	font-weight: 800;
+	line-height: 1.12;
+	letter-spacing: -0.03em;
+}
+
+.hero__subtitle {
+	margin-bottom: 36px;
+	color: var(--text-muted);
+	font-size: clamp(17px, 2.2vw, 19px);
+}
+
+.hero__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 14px;
+}
+
+/* ========== Разделы ========== */
+.section {
+	padding: 80px 0;
+}
+
+.section__title {
+	margin-bottom: 40px;
+	font-size: clamp(28px, 5vw, 40px);
+	font-weight: 800;
+	letter-spacing: -0.02em;
+}
+
+/* небольшая акцентная полоска под заголовком */
+.section__title::after {
+	content: '';
+	display: block;
+	width: 48px;
+	height: 4px;
+	margin-top: 14px;
+	border-radius: 2px;
+	background: var(--accent);
+}
+
+/* ========== Обо мне ========== */
+.about {
+	display: grid;
+	gap: 18px;
+	max-width: 760px;
+	color: var(--text); /* оба абзаца одного цвета — это единый блок */
+	font-size: clamp(17px, 2vw, 19px);
+}
+
+/* Карточки «Почему со мной удобно» */
+.features {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+	margin-top: 48px;
+}
+
+.feature {
+	padding: 26px;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	transition: border-color var(--transition), transform var(--transition), background-color var(--transition);
+}
+
+.feature:hover {
+	border-color: rgba(var(--accent-rgb), 0.5);
+	background: var(--bg-card-hover);
+	transform: translateY(-4px);
+}
+
+/* иконка в оранжевом квадратике */
+.feature__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-bottom: 18px;
+	border-radius: 12px;
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.feature__icon svg {
+	width: 24px;
+	height: 24px;
+}
+
+.feature__title {
+	margin-bottom: 8px;
+	font-size: 19px;
+	font-weight: 700;
+}
+
+.feature__text {
+	color: var(--text-muted);
+	font-size: 16px;
+}
+
+/* ========== Навыки ========== */
+.skills {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+}
+
+.skill-group {
+	padding: 26px;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	transition: border-color var(--transition), transform var(--transition), background-color var(--transition);
+}
+
+.skill-group:hover {
+	border-color: rgba(var(--accent-rgb), 0.5);
+	background: var(--bg-card-hover);
+	transform: translateY(-4px);
+}
+
+.skill-group__title {
+	margin-bottom: 18px;
+	font-size: 19px;
+	font-weight: 700;
+}
+
+.skill-list {
+	display: grid;
+	gap: 12px;
+}
+
+.skill-list li {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	color: var(--text-muted);
+}
+
+/* иконки навыков (и Devicon, и Lucide) — одного размера */
+.skill-list i,
+.skill-list svg {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 22px;
+	height: 22px;
+	font-size: 22px;
+}
+
+/* иконки Lucide — в акцентном цвете */
+.skill-list svg.lucide {
+	color: var(--accent-hover);
+	stroke-width: 1.8;
+}
+
+/* ========== Проекты ========== */
+.projects {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+}
+
+.project-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.project-card:hover {
+	border-color: rgba(var(--accent-rgb), 0.5);
+	transform: translateY(-6px);
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Заглушка вместо картинки-превью (и место для настоящего скриншота) */
+.project-card__preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	background:
+		radial-gradient(circle at 30% 20%, rgba(var(--accent-rgb), 0.35), transparent 60%),
+		linear-gradient(135deg, #24242c, #1a1a20);
+	border-bottom: 1px solid var(--border);
+	color: var(--accent-hover);
+}
+
+.project-card__preview svg {
+	width: 56px;
+	height: 56px;
+	stroke-width: 1.4;
+	opacity: 0.85;
+	transition: transform var(--transition);
+}
+
+.project-card:hover .project-card__preview svg {
+	transform: scale(1.1);
+}
+
+.project-card__body {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	padding: 24px;
+}
+
+.project-card__title {
+	margin-bottom: 8px;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.project-card__desc {
+	margin-bottom: 18px;
+	color: var(--text-muted);
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 22px;
+}
+
+.tags li {
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent-hover);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.project-card__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: auto; /* прижимает кнопки к низу карточки */
+}
+
+/* ========== Контакты ========== */
+.contacts__lead {
+	margin-bottom: 32px;
+	color: var(--text-muted);
+	font-size: 18px;
+}
+
+.contacts {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+}
+
+.contact {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	min-width: 0;
+	padding: 20px 22px;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	transition: border-color var(--transition), transform var(--transition), background-color var(--transition), box-shadow var(--transition);
+}
+
+.contact:hover {
+	border-color: var(--accent);
+	background: var(--bg-card-hover);
+	transform: translateY(-4px);
+}
+
+.contact > i,
+.contact > svg {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+	color: var(--accent-hover);
+}
+
+.contact__text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.contact__label {
+	font-weight: 700;
+}
+
+.contact__value {
+	color: var(--text-muted);
+	font-size: 15px;
+	overflow-wrap: anywhere; /* длинная почта переносится, а не вылезает за край */
+}
+
+/* Главная кнопка — Telegram: крупнее и в акцентном цвете */
+.contact--main {
+	padding: 26px 28px;
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--on-accent);
+}
+
+.contact--main:hover {
+	background: var(--accent-hover);
+	border-color: var(--accent-hover);
+	box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35);
+}
+
+.contact--main .tg-icon {
+	width: 36px;
+	height: 36px;
+	color: var(--on-accent);
+}
+
+.contact--main .contact__label {
+	font-size: 20px;
+}
+
+.contact--main .contact__value {
+	color: var(--on-accent);
+	opacity: 0.75;
+}
+
+/* ========== Футер ========== */
+.footer {
+	padding: 32px 0;
+	border-top: 1px solid var(--border);
+	color: var(--text-muted);
+	font-size: 15px;
+}
+
+.footer__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	text-align: center;
+}
+
+.footer__links {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 22px;
+}
+
+.footer__links a {
+	transition: color var(--transition);
+}
+
+.footer__links a:hover {
+	color: var(--accent-hover);
+}
+
+/* ========== Появление блоков при прокрутке ==========
+   Работает только если включён JavaScript (класс .js на <html>),
+   иначе всё просто видно сразу. */
+.js .reveal {
+	opacity: 0;
+	transform: translateY(24px);
+	transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.js .reveal.is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+/* Карточки: после появления возвращаем быстрые эффекты наведения */
+.js .skill-group.reveal.is-visible,
+.js .feature.reveal.is-visible,
+.js .project-card.reveal.is-visible {
+	transition: opacity 0.6s ease, transform var(--transition), border-color var(--transition),
+		background-color var(--transition), box-shadow var(--transition);
+}
+
+.js .skill-group.reveal.is-visible:hover,
+.js .feature.reveal.is-visible:hover { transform: translateY(-4px); }
+.js .project-card.reveal.is-visible:hover { transform: translateY(-6px); }
+
+/* ========== Телефон: меню-«бургер» (до 767px) ========== */
+@media (max-width: 767px) {
+	.burger {
+		display: block;
+	}
+
+	.nav {
+		position: absolute;
+		top: var(--header-height);
+		left: 0;
+		right: 0;
+		padding: 8px 20px 24px;
+		background: var(--bg);
+		border-bottom: 1px solid var(--border);
+		/* по умолчанию меню спрятано */
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-8px);
+		transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+	}
+
+	.nav.is-open {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+
+	.nav__list {
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.nav__link {
+		display: block;
+		padding: 14px 0;
+		font-size: 18px;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.nav__list li:last-child .nav__link {
+		border-bottom: none;
+	}
+
+	.hero__buttons .btn {
+		width: 100%;
+	}
+
+	.section {
+		padding: 64px 0;
+	}
+}
+
+/* ========== Планшет (от 768px) ========== */
+@media (min-width: 768px) {
+	.container {
+		padding: 0 32px;
+	}
+
+	.skills,
+	.projects,
+	.features {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.contacts {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	/* кнопка Telegram на всю ширину — она главная */
+	.contact--main {
+		grid-column: 1 / -1;
+	}
+
+	.footer__inner {
+		flex-direction: row;
+		justify-content: space-between;
+		text-align: left;
+	}
+}
+
+/* ========== Компьютер (от 1024px) ========== */
+@media (min-width: 1024px) {
+	.section {
+		padding: 110px 0;
+	}
+
+	.hero__inner {
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		justify-items: start;
+		gap: 64px;
+		text-align: left;
+	}
+
+	/* фото справа, текст слева */
+	.hero__photo {
+		order: 2;
+		width: 357px;
+	}
+
+	.hero__buttons {
+		justify-content: flex-start;
+	}
+
+	.skills {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.contacts {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+/* Если человек отключил анимации в настройках системы — убираем их */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+
+	.js .reveal {
+		opacity: 1;
+		transform: none;
+	}
+}
